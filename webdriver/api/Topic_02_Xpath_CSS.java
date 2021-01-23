@@ -12,19 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Topic_02_Xpath_CSS {
     WebDriver driver;
-    @Test
-    public void logInWithEmptyEmailAndPassword () throws InterruptedException {
-        driver.findElement(By.xpath(".//*[@id='header']/div/div[2]/div/a/span[2]")).click();
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-        driver.findElement(By.xpath(".//*[@id='header-account']/div/ul/li[1]/a")).click();
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-        Thread.sleep(2000);
-        driver.findElement(By.id("send2"));
-        Thread.sleep(2000);
-        String pageTitle = driver.getTitle();
-        Assert.assertEquals(pageTitle,"Customer Login");
-
-    }
     @BeforeClass
     public void beforeClass(){
         driver = new FirefoxDriver();
@@ -33,6 +20,33 @@ public class Topic_02_Xpath_CSS {
         driver.get("http://live.demoguru99.com/");
 
     }
+    public void sleepInSecond(long time){
+        try {
+            Thread.sleep(time*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void logInWithEmptyEmailAndPassword ()  {
+
+        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        sleepInSecond(2);
+        driver.findElement(By.id("send2")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+
+        String emailErrorMsg = driver.findElement(By.xpath(".//*[@id='advice-required-entry-email']")).getText();
+        String passErrorMsg = driver.findElement(By.xpath(".//*[@id='advice-required-entry-pass']")).getText();
+
+        Assert.assertEquals(emailErrorMsg,"This is a required field.");
+        Assert.assertEquals(passErrorMsg,"This is a required field.");
+
+
+    }
+
     @AfterClass
-    public void afterClass(){}
+    public void afterClass(){
+        driver.quit();
+    }
 }
