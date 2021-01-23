@@ -30,7 +30,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
     @Test
     public void logInWithEmptyEmailAndPasswordTC_01 ()  {
 
-        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         sleepInSecond(2);
         driver.findElement(By.id("send2")).click();
@@ -47,7 +47,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         String email = "1234@1234.1234";
         String passWord = "2314235";
         driver.navigate().refresh();
-        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         sleepInSecond(2);
         driver.findElement(By.id("email")).sendKeys(email);
@@ -67,7 +67,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         String email = "automation@gmail.com";
         String passWord = "123";
         driver.navigate().refresh();
-        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         sleepInSecond(2);
         driver.findElement(By.id("email")).sendKeys(email);
@@ -87,7 +87,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         String email = "automation@gmail.com";
         String passWord = "123123123";
         driver.navigate().refresh();
-        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         sleepInSecond(2);
         driver.findElement(By.id("email")).sendKeys(email);
@@ -109,7 +109,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         String email = generateEmail()+"@gmail.com";
         String passWord = "12345678";
         driver.navigate().refresh();
-        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
         sleepInSecond(2);
 
@@ -123,15 +123,17 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         driver.findElement(By.id("confirmation")).sendKeys(passWord);
         driver.findElement(By.id("is_subscribed")).click();
         sleepInSecond(4);
-        driver.findElement(By.className("validation-passed")).click();
+        driver.findElement(By.xpath("//button[@title='Register']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 
-
+        String successMsg = driver.findElement(By.xpath("//li[@class='success-msg']/ul/li")).getText();
+        Assert.assertEquals(successMsg,"Thank you for registering with Main Website Store.");
 
 
 
     }
     @AfterClass
     public void afterClass(){
-        driver.quit();
+//        driver.quit();
     }
 }
