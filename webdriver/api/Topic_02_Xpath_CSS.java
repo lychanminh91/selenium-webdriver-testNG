@@ -36,15 +36,35 @@ public class Topic_02_Xpath_CSS {
         driver.findElement(By.id("send2")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 
-        String emailErrorMsg = driver.findElement(By.xpath(".//*[@id='advice-required-entry-email']")).getText();
-        String passErrorMsg = driver.findElement(By.xpath(".//*[@id='advice-required-entry-pass']")).getText();
+        String emailErrorMsg = driver.findElement(By.xpath("//*[@id='advice-required-entry-email']")).getText();
+        String passErrorMsg = driver.findElement(By.xpath("//*[@id='advice-required-entry-pass']")).getText();
 
         Assert.assertEquals(emailErrorMsg,"This is a required field.");
         Assert.assertEquals(passErrorMsg,"This is a required field.");
 
 
     }
+    @Test
+    public void logInWithInvalidEmail ()  {
+        String email = "1234@1234.1234";
+        String passWord = "2314235";
+        driver.navigate().refresh();
+        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        sleepInSecond(2);
+        driver.findElement(By.id("email")).sendKeys(email);
+        driver.findElement(By.id("pass")).sendKeys(passWord);
+        driver.findElement(By.id("send2")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 
+        String emailErrorMsg = driver.findElement(By.xpath("//*[@id='advice-validate-email-email']")).getText();
+        //String passErrorMsg = driver.findElement(By.xpath(".//*[@id='advice-required-entry-pass']")).getText();
+
+        Assert.assertEquals(emailErrorMsg,"Please enter a valid email address. For example johndoe@domain.com.");
+        //Assert.assertEquals(passErrorMsg,"This is a required field.");
+
+
+    }
     @AfterClass
     public void afterClass(){
         driver.quit();
