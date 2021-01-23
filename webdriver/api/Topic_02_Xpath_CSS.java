@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class Topic_02_Xpath_CSS {
+public class Topic_02_Xpath_CSS extends Create_Random_Email {
     WebDriver driver;
     @BeforeClass
     public void beforeClass(){
@@ -28,7 +28,7 @@ public class Topic_02_Xpath_CSS {
         }
     }
     @Test
-    public void logInWithEmptyEmailAndPassword ()  {
+    public void logInWithEmptyEmailAndPasswordTC_01 ()  {
 
         driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
@@ -43,7 +43,7 @@ public class Topic_02_Xpath_CSS {
         Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
     @Test
-    public void logInWithInvalidEmail ()  {
+    public void logInWithInvalidEmailTC_02 ()  {
         String email = "1234@1234.1234";
         String passWord = "2314235";
         driver.navigate().refresh();
@@ -63,7 +63,7 @@ public class Topic_02_Xpath_CSS {
     }
 
     @Test
-    public void logInShortPassword ()  {
+    public void logInShortPasswordTC_03 ()  {
         String email = "automation@gmail.com";
         String passWord = "123";
         driver.navigate().refresh();
@@ -80,6 +80,55 @@ public class Topic_02_Xpath_CSS {
 
         Assert.assertEquals(passErrorMsg,"Please enter 6 or more characters without leading or trailing spaces.");
         //Assert.assertEquals(passErrorMsg,"This is a required field.");
+    }
+
+    @Test
+    public void logInWithCorrectEmailAndWrongPassword_TC04 ()  {
+        String email = "automation@gmail.com";
+        String passWord = "123123123";
+        driver.navigate().refresh();
+        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        sleepInSecond(2);
+        driver.findElement(By.id("email")).sendKeys(email);
+        driver.findElement(By.id("pass")).sendKeys(passWord);
+        driver.findElement(By.id("send2")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+
+        //String emailErrorMsg = driver.findElement(By.xpath("//*[@id='advice-validate-email-email']")).getText();
+        String passErrorMsg = driver.findElement(By.xpath("//div[@class='account-login']/ul[1]/li[@class='error-msg']/ul/li")).getText();
+
+        Assert.assertEquals(passErrorMsg,"Invalid login or password.");
+        //Assert.assertEquals(passErrorMsg,"This is a required field.");
+    }
+
+    @Test
+    public void createNewAccount_TC05 ()  {
+        String firstName = "Minh_First_Name";
+        String lastName = "Minh_Last_Name";
+        String email = generateEmail()+"@gmail.com";
+        String passWord = "12345678";
+        driver.navigate().refresh();
+        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        sleepInSecond(2);
+
+        driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+
+        driver.findElement(By.id("firstname")).sendKeys(firstName);
+        driver.findElement(By.id("lastname")).sendKeys(lastName);
+        driver.findElement(By.id("email_address")).sendKeys(email);
+        driver.findElement(By.id("password")).sendKeys(passWord);
+        driver.findElement(By.id("confirmation")).sendKeys(passWord);
+        driver.findElement(By.id("is_subscribed")).click();
+        sleepInSecond(4);
+        driver.findElement(By.className("validation-passed")).click();
+
+
+
+
+
     }
     @AfterClass
     public void afterClass(){
