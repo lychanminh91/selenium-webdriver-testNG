@@ -41,8 +41,6 @@ public class Topic_02_Xpath_CSS {
 
         Assert.assertEquals(emailErrorMsg,"This is a required field.");
         Assert.assertEquals(passErrorMsg,"This is a required field.");
-
-
     }
     @Test
     public void logInWithInvalidEmail ()  {
@@ -62,8 +60,26 @@ public class Topic_02_Xpath_CSS {
 
         Assert.assertEquals(emailErrorMsg,"Please enter a valid email address. For example johndoe@domain.com.");
         //Assert.assertEquals(passErrorMsg,"This is a required field.");
+    }
 
+    @Test
+    public void logInShortPassword ()  {
+        String email = "automation@gmail.com";
+        String passWord = "123";
+        driver.navigate().refresh();
+        driver.findElement(By.xpath("//div[@class='footer']/div[4]/ul/li[@class='first']/a[@title='My Account']")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        sleepInSecond(2);
+        driver.findElement(By.id("email")).sendKeys(email);
+        driver.findElement(By.id("pass")).sendKeys(passWord);
+        driver.findElement(By.id("send2")).click();
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 
+        //String emailErrorMsg = driver.findElement(By.xpath("//*[@id='advice-validate-email-email']")).getText();
+        String passErrorMsg = driver.findElement(By.id("advice-validate-password-pass")).getText();
+
+        Assert.assertEquals(passErrorMsg,"Please enter 6 or more characters without leading or trailing spaces.");
+        //Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
     @AfterClass
     public void afterClass(){
