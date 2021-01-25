@@ -31,7 +31,8 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
             e.printStackTrace();
         }
     }
-    @Test
+
+    @Test(priority = 0)
     public void logInWithEmptyEmailAndPasswordTC_01 ()  {
 
         driver.findElement(By.xpath("//div[@class='footer']//a[@title='My Account']")).click();
@@ -46,7 +47,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         Assert.assertEquals(emailErrorMsg,"This is a required field.");
         Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
-    @Test
+    @Test(priority = 1)
     public void logInWithInvalidEmailTC_02 ()  {
         String email = "1234@1234.1234";
         String passWord = "2314235";
@@ -66,7 +67,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         //Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
 
-    @Test
+    @Test(priority = 2)
     public void logInShortPasswordTC_03 ()  {
         String email = "automation@gmail.com";
         String passWord = "123";
@@ -86,7 +87,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         //Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
 
-    @Test
+    @Test(priority = 3)
     public void logInWithCorrectEmailAndWrongPassword_TC04 ()  {
         String email = "automation@gmail.com";
         String passWord = "123123123";
@@ -106,7 +107,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         //Assert.assertEquals(passErrorMsg,"This is a required field.");
     }
 
-    @Test
+    @Test(priority = 4)
     public void  createNewAccount_TC05 ()  {
 
         String passWord = "12345678";
@@ -147,9 +148,8 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         System.out.println(retrievedEmail);
 
     }
-
-    @Test(dependsOnMethods = "createNewAccount_TC05")
-    public void logInWithNewCreatedAccount  ()  {
+    @Test(priority = 5)
+    public void logInWithNewCreatedAccount_TC06  ()  {
 
         String passWord = "12345678";
         driver.navigate().refresh();
@@ -163,11 +163,11 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
 
 
         String helloDashboard = driver.findElement(By.xpath("//strong[contains(text(),'Hello')]")).getText();
-        String nameInContactSection = driver.findElement(By.xpath("//div[@class='main']//div[@class='box-content']/p[contains(text(),'Minh_First_Name')]")).getText();
+        String nameInContactSection = driver.findElement(By.xpath("//div[@class='main']//div[@class='box-content']/p[contains(text(),'Minh_First_Name Minh_Last_Name')]")).getText();
         String retrievedEmail= driver.findElement(By.xpath("//div[@class='main']//div[@class='box-content']/p[contains(text(),'Minh_Last_Name')]")).getText();
 
         boolean emailIsFound = retrievedEmail.contains(autoEmail);
-
+        boolean nameInContactSectionFound = nameInContactSection.contains("Minh_First_Name Minh_Last_Name");
 
         //Verify MY DASHBOARD Title
         Assert.assertTrue(driver.findElement(By.xpath("//h1[text()='My Dashboard']")).isDisplayed());
@@ -176,7 +176,7 @@ public class Topic_02_Xpath_CSS extends Create_Random_Email {
         Assert.assertEquals(helloDashboard,"Hello, "+firstName+" "+lastName+"!");
 
         //Verify Contact section
-        Assert.assertEquals(nameInContactSection,firstName+" "+lastName);
+        Assert.assertTrue(nameInContactSectionFound);
 
         //Verify email is Displayed
         Assert.assertTrue(emailIsFound);
