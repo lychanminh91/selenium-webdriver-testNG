@@ -2,6 +2,7 @@ package api;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -12,20 +13,31 @@ import java.util.concurrent.TimeUnit;
 
 public class Topic_06_Element {
     WebDriver driver;
+    By mail = By.id("mail");
+    By edu = By.id("edu");
     @BeforeClass
     public void beforeClass(){
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.get("https://login.mailchimp.com/signup/");
+        driver.get("https://automationfc.github.io/basic-form/index.html");
 
     }
 
+    public boolean elementDisplay (By by){
+        WebElement element= driver.findElement(by);
+        return element.isDisplayed();
+    }
+
+    public void elementSendKeys(By by, String value){
+        WebElement element= driver.findElement(by);
+        element.sendKeys(value);
+    }
     @Test
     public void verifyIsDisplayed_TC01 (){
 
 
-        Assert.assertTrue(driver.findElement(By.id("mail")).isDisplayed());
+        Assert.assertTrue(elementDisplay(mail));
         Assert.assertTrue(driver.findElement(By.id("under_18")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.id("edu")).isDisplayed());
 
@@ -34,8 +46,8 @@ public class Topic_06_Element {
         boolean educationLabel = driver.findElement(By.id("edu")).isDisplayed();
 
         if (emailDisplay && educationLabel){
-            driver.findElement(By.id("mail")).sendKeys("Automation Testing");
-            driver.findElement(By.id("edu")).sendKeys("Automation Testing");
+            elementSendKeys(mail,"send keys");
+            elementSendKeys(edu,"send keys");
         }
         else {
             System.out.println("No email found");
