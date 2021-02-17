@@ -13,7 +13,7 @@ public class Create_Random_Email {
             int index = (int) (rnd.nextFloat()*characterForRandom.length());
             randomEmail.append(characterForRandom.charAt(index));
         }
-        String createdEmail = randomEmail.toString();
+        String createdEmail = randomEmail.toString()+"@gmail.com";
         return createdEmail;
     }
 }
