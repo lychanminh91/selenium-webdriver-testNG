@@ -2,6 +2,7 @@ package api;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -21,6 +22,7 @@ public class Topic_19_UserInteraction {
     By age = By.id("age");
     By kids = By.xpath("//div[@class='desktop-navLink']/a[text()='Kids']");
     By homeAndBath = By.xpath("//a[text()='Home & Bath']");
+
 
     public void sleepInSeconds(long time){
         try {
@@ -82,6 +84,24 @@ public class Topic_19_UserInteraction {
 
         Assert.assertEquals(selectedNumbers.size(),4);
 
+    }
+
+    @Test
+    public void TC_05(){
+        driver.get("http://jqueryui.com/resources/demos/selectable/display-grid.html");
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        List<WebElement> numbers = driver.findElements(By.xpath("//ol[@id='selectable']/li"));
+
+        action.keyDown(Keys.CONTROL);
+        action.click(numbers.get(0))
+                .click(numbers.get(2))
+                .click(numbers.get(5))
+                .click(numbers.get(10))
+                .perform();
+        action.keyUp(Keys.CONTROL);
+        sleepInSeconds(3);
+        List<WebElement> selectedNumbers = driver.findElements(By.className("ui-selected"));
+        Assert.assertEquals(selectedNumbers.size(),4);
     }
 
     @AfterClass
