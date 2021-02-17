@@ -104,6 +104,15 @@ public class Topic_19_UserInteraction {
         Assert.assertEquals(selectedNumbers.size(),4);
     }
 
+    @Test
+    public void TC_06(){
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        action.doubleClick(driver.findElement(By.xpath("//button[text()='Double click me']"))).perform();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
+    }
+
     @AfterClass
     public void afterClass(){
 driver.quit();
