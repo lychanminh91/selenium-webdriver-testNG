@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -18,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Topic_19_UserInteraction {
     WebDriver driver;
     Actions action;
+    WebDriverWait explicitWait;
     By tooltip = By.xpath("//div[text()='We ask for your age only for statistical purposes.']");
     By age = By.id("age");
     By kids = By.xpath("//div[@class='desktop-navLink']/a[text()='Kids']");
@@ -35,6 +38,7 @@ public class Topic_19_UserInteraction {
     public void beforeClass(){
     driver = new FirefoxDriver();
     action = new Actions(driver);
+    explicitWait = new WebDriverWait(driver,10);
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     driver.manage().window().maximize();
     }
@@ -111,6 +115,24 @@ public class Topic_19_UserInteraction {
         action.doubleClick(driver.findElement(By.xpath("//button[text()='Double click me']"))).perform();
 
         Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
+    }
+
+    @Test
+    public void TC_07(){
+        driver.get("http://swisnl.github.io/jQuery-contextMenu/demo.html");
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+
+        action.contextClick(driver.findElement(By.xpath("//span[text()='right click me']"))).perform();
+        action.moveToElement(driver.findElement(By.cssSelector(".context-menu-icon-quit"))).perform();
+        Assert.assertTrue(driver.findElement(By.cssSelector(".context-menu-icon-quit.context-menu-hover.context-menu-visible")).isDisplayed());
+        driver.findElement(By.cssSelector(".context-menu-icon-quit.context-menu-hover.context-menu-visible")).click();
+        String alertText = driver.switchTo().alert().getText();
+        Assert.assertEquals(alertText,"clicked: quit");
+        driver.switchTo().alert().accept();
+
+//        explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//li[@class='context-menu-icon-quit' and 'context-menu-visible']")));
+        List<WebElement> items = driver.findElements(By.xpath("//li[@class='context-menu-icon-quit' and 'context-menu-visible']"));
+        Assert.assertEquals(items.size(),0);
     }
 
     @AfterClass
