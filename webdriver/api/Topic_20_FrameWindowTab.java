@@ -12,13 +12,24 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class Topic_20_FrameWindowTab {
     WebDriver driver;
     Actions action;
     WebDriverWait explicitWait;
-
+    By facebookIcon = By.xpath("//div[@class='hotline']//div[@class='social']/a[@href='https://www.facebook.com/kyna.vn']");
+    By youTubeIcon = By.xpath("//div[@class='hotline']//div[@class='social']/a[@href='https://www.youtube.com/user/kynavn']");
+    By zaloIcon = By.xpath("//div[@class='hotline']//div[@class='social']/a[@href='https://zalo.me/1985686830006307471']");
+    By kynaFanpage = By.xpath("//div[@class='face-content']");
+    By blueCongThuongIcon = By.xpath("//a[@href='http://online.gov.vn/HomePage/CustomWebsiteDisplay.aspx?DocId=61482']");
+    By redCongThuongIcon = By.xpath("//a[@href='http://online.gov.vn/Home/WebDetails/60140']");
+    String facebookIconTitle = "Kyna.vn - Trang chủ | Facebook";
+    String youtubeIconTitle = "Kyna.vn - YouTube";
+    String zaloIconTitle = "Zalo Official Account";
+    String redIconTitle = "Thông tin website thương mại điện tử - Online.Gov.VN";
+    String blueIconUrl = "http://online.gov.vn/Home/WebDetails/61473";
     public void sleepInSeconds(long time){
         try {
             Thread.sleep(time*1000);
@@ -103,6 +114,124 @@ public class Topic_20_FrameWindowTab {
 //
        Assert.assertTrue(driver.findElement(By.xpath("//label[text()='Nhập thông tin của bạn']//following-sibling::div[contains(text(),'Tên của bạn chưa được nhập')]")).isDisplayed());
        sleepInSeconds(5);
+    }
+    public void switchToChildWindowById(String parentID){
+        Set<String> allWindows = driver.getWindowHandles();
+        for(String window : allWindows){
+            if(!window.equals(parentID)){
+                driver.switchTo().window(window);
+                break;
+            }
+        }
+    }
+
+    public void swithToChildWindowByTitle(String title){
+        Set<String> allWindows = driver.getWindowHandles();
+        for(String runWindow : allWindows){
+            driver.switchTo().window(runWindow);
+            String currentWin = driver.getTitle();
+            if(currentWin.equals(title)){
+                break;
+            }
+        }
+    }
+
+    public void swithToChildWindowByUrl(String url){
+        Set<String> allWindows = driver.getWindowHandles();
+        for(String runWindow : allWindows){
+            driver.switchTo().window(runWindow);
+            String currentWin = driver.getCurrentUrl();
+            if(currentWin.equals(url)){
+                break;
+            }
+        }
+    }
+
+    public boolean closeAllSubWindowById(String parentId){
+    Set<String> allWindows = driver.getWindowHandles();
+    for(String runWindow : allWindows){
+        if(!runWindow.equals(parentId)){
+            driver.switchTo().window(runWindow);
+            driver.close();
+        }
+        driver.switchTo().window(parentId);
+    }
+        return driver.getWindowHandles().size() == 1;
+    }
+
+    public void clickToElement(By by){
+        driver.findElement(by).click();
+    }
+
+    public boolean verifyStayInCorrectWindow(String title){
+        return driver.getTitle().equals(title);
+    }
+    @Test
+    public void TC_06_Window(){
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        String parentWindowId = driver.getWindowHandle();
+        driver.findElement(By.xpath("//a[text()='GOOGLE']")).click();
+        sleepInSeconds(2);
+        swithToChildWindowByTitle("Google");
+
+        Assert.assertEquals(driver.getTitle(),"Google");
+//      driver.close();
+        driver.switchTo().window(parentWindowId);
+//        sleepInSeconds(2);
+
+        driver.findElement(By.xpath("//a[text()='FACEBOOK']")).click();
+//        sleepInSeconds(2);
+
+        swithToChildWindowByTitle("Facebook - Đăng nhập hoặc đăng ký");
+//        sleepInSeconds(2);
+        Assert.assertEquals(driver.getTitle(),"Facebook - Đăng nhập hoặc đăng ký");
+        driver.switchTo().window(parentWindowId);
+
+        driver.findElement(By.xpath("//a[text()='TIKI']")).click();
+//        sleepInSeconds(2);
+        swithToChildWindowByTitle("Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
+        Assert.assertEquals(driver.getTitle(),"Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh");
+//        sleepInSeconds(2);
+
+        closeAllSubWindowById(parentWindowId);
+
+
+
+    }
+
+    @Test
+    public void TC_07(){
+        driver.get("https://kyna.vn/");
+        driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+        String parentWindowId = driver.getWindowHandle();
+        clickToElement(facebookIcon);
+        clickToElement(youTubeIcon);
+        clickToElement(zaloIcon);
+        clickToElement(blueCongThuongIcon);
+        clickToElement(redCongThuongIcon);
+
+        swithToChildWindowByTitle(facebookIconTitle);
+        verifyStayInCorrectWindow(facebookIconTitle);
+        sleepInSeconds(2);
+
+        swithToChildWindowByTitle(youtubeIconTitle);
+        verifyStayInCorrectWindow(youtubeIconTitle);
+        sleepInSeconds(2);
+
+        swithToChildWindowByTitle(zaloIconTitle);
+        verifyStayInCorrectWindow(zaloIconTitle);
+        sleepInSeconds(2);
+
+        swithToChildWindowByTitle(redIconTitle);
+        verifyStayInCorrectWindow(redIconTitle);
+        sleepInSeconds(2);
+
+        swithToChildWindowByUrl(blueIconUrl);
+        Assert.assertEquals(driver.getCurrentUrl(),blueIconUrl);
+        sleepInSeconds(2);
+
+        closeAllSubWindowById(parentWindowId);
     }
 
     @AfterClass
