@@ -163,7 +163,7 @@ public class Topic_20_FrameWindowTab {
         driver.findElement(by).click();
     }
 
-    public boolean verifyStayInCorrectWindow(String title){
+    public boolean verifySwitchToCorrectWindow(String title){
         return driver.getTitle().equals(title);
     }
     @Test
@@ -212,24 +212,24 @@ public class Topic_20_FrameWindowTab {
         clickToElement(redCongThuongIcon);
 
         swithToChildWindowByTitle(facebookIconTitle);
-        verifyStayInCorrectWindow(facebookIconTitle);
-        sleepInSeconds(2);
+        verifySwitchToCorrectWindow(facebookIconTitle);
+//        sleepInSeconds(2);
 
         swithToChildWindowByTitle(youtubeIconTitle);
-        verifyStayInCorrectWindow(youtubeIconTitle);
-        sleepInSeconds(2);
+        verifySwitchToCorrectWindow(youtubeIconTitle);
+//        sleepInSeconds(2);
 
         swithToChildWindowByTitle(zaloIconTitle);
-        verifyStayInCorrectWindow(zaloIconTitle);
-        sleepInSeconds(2);
+        verifySwitchToCorrectWindow(zaloIconTitle);
+//        sleepInSeconds(2);
 
         swithToChildWindowByTitle(redIconTitle);
-        verifyStayInCorrectWindow(redIconTitle);
-        sleepInSeconds(2);
+        verifySwitchToCorrectWindow(redIconTitle);
+//        sleepInSeconds(2);
 
         swithToChildWindowByUrl(blueIconUrl);
         Assert.assertEquals(driver.getCurrentUrl(),blueIconUrl);
-        sleepInSeconds(2);
+//        sleepInSeconds(2);
 
         closeAllSubWindowById(parentWindowId);
     }
