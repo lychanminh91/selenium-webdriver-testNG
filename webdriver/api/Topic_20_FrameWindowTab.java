@@ -234,6 +234,27 @@ public class Topic_20_FrameWindowTab {
         closeAllSubWindowById(parentWindowId);
     }
 
+    @Test
+    public void TC_08(){
+        driver.get("http://live.demoguru99.com/index.php/");
+        driver.findElement(By.xpath("//a[text()='Mobile']")).click();
+        String parentWindowId = driver.getWindowHandle();
+
+        driver.findElement(By.xpath("//a[@title='Xperia']/following-sibling::div//a[text()='Add to Compare']")).click();
+        Assert.assertTrue(driver.findElement(By.xpath("//span[text()='The product Sony Xperia has been added to comparison list.']")).isDisplayed());
+        driver.findElement(By.xpath("//a[@title='Samsung Galaxy']/following-sibling::div//a[text()='Add to Compare']")).click();
+        Assert.assertTrue(driver.findElement(By.xpath("//span[text()='The product Samsung Galaxy has been added to comparison list.']")).isDisplayed());
+        driver.findElement(By.xpath("//button[@title='Compare']")).click();
+        switchToChildWindowById(parentWindowId);
+
+        Assert.assertEquals(driver.getTitle(),"Products Comparison List - Magento Commerce");
+        closeAllSubWindowById(parentWindowId);
+        driver.findElement(By.xpath("//a[text()='Clear All']")).click();
+        driver.switchTo().alert().accept();
+        Assert.assertTrue(driver.findElement(By.xpath("//span[text()='The comparison list was cleared.']")).isDisplayed());
+
+    }
+
     @AfterClass
     public void afterClass(){
 driver.quit();
