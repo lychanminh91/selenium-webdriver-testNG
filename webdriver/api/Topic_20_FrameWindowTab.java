@@ -252,7 +252,6 @@ public class Topic_20_FrameWindowTab {
         driver.findElement(By.xpath("//a[text()='Clear All']")).click();
         driver.switchTo().alert().accept();
         Assert.assertTrue(driver.findElement(By.xpath("//span[text()='The comparison list was cleared.']")).isDisplayed());
-
     }
 
     @AfterClass
